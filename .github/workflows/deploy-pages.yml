@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # The custom domain serves the site at /, without the repository prefix.
+      NEXT_PUBLIC_BASE_PATH: ''
     steps:
       - name: Baixar o código
         uses: actions/checkout@v4
@@ -37,13 +40,9 @@ jobs:
 
       - name: Gerar site estático
         run: pnpm build
-        env:
-          NEXT_PUBLIC_BASE_PATH: /porto2life
 
       - name: Preparar e validar arquivos para GitHub Pages
         run: node scripts/prepare-pages.mjs
-        env:
-          NEXT_PUBLIC_BASE_PATH: /porto2life
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5

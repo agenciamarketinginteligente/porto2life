@@ -7,7 +7,7 @@ const geist = Geist({
   subsets: ['latin'],
 });
 
-const siteUrl = new URL('https://agenciamarketinginteligente.github.io/porto2life/');
+const siteUrl = new URL('https://porto2life.digitalfluxai.com.br/');
 const shareImageUrl = new URL('og-porto2life.jpg', siteUrl).href;
 const title = 'Porto 2 Life | Guia de experiência';
 const description = 'Bem-vindo ao apto 134, bloco 2. Chegada, gastronomia, lazer, serviços e contatos: tudo para aproveitar sua estadia.';
