@@ -81,6 +81,7 @@ const menuPages = [
 ];
 
 const barMenuPages = [
+  { src: '/bar-piscina-praia-foto.webp', label: 'Bar da piscina', alt: 'Área do bar e mesas à beira da piscina do resort' },
   { src: '/bar-cardapio-1.webp', label: 'Bebidas', alt: 'Cardápio de bebidas do bar da piscina e praia' },
   { src: '/bar-cardapio-2.webp', label: 'Lanches e petiscos', alt: 'Cardápio de lanches, petiscos, sanduíches e combos do bar' },
 ];
@@ -730,7 +731,7 @@ export function PortoGuide() {
               title="Lazer, piscina e praia"
               description="Organize o dia com os principais horários e reservas."
             />
-            <Photo src="/pool.webp?v=2" alt="Piscina do resort cercada por palmeiras" className="mb-3 aspect-[3/2]" />
+            <Photo src="/lazer-piscina-praia-aerea.webp" alt="Vista aérea das piscinas do resort e da praia de Muro Alto" className="mb-3 aspect-[3/2]" />
             <div className="grid grid-cols-2 gap-2.5">
               {[
                 { icon: Sun, label: 'Piscina', value: '9h–22h' },
