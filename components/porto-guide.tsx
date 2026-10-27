@@ -32,6 +32,7 @@ import {
   Martini,
   MessageCircle,
   Palmtree,
+  PawPrint,
   Phone,
   PlugZap,
   Sailboat,
@@ -58,6 +59,7 @@ const links = {
   emporioMuroAlto: 'https://share.google/u8V46PlRjRO8SYbGT',
   arcoVita: 'https://share.google/a4pp4xt5JTykIyDS7',
   spaWhatsApp: 'https://wa.me/5581989028947',
+  resortLocation: 'https://www.google.com/maps/dir//porto+2+life+resort/data=!4m6!4m5!1m1!4e2!1m2!1m1!1s0x7aaed83f0288801:0x3dae7d8a30bbfe5f?sa=X&ved=1t:155782&ictx=111',
 };
 
 const navItems = [
@@ -95,6 +97,12 @@ const spaPages = [
 const resortMapPages = [
   { src: '/mapa-resort.webp', label: 'Mapa do resort', alt: 'Mapa aéreo do resort com blocos e áreas numeradas' },
   { src: '/mapa-resort-legenda.webp', label: 'Legenda e locais', alt: 'Legenda do mapa com a descrição dos locais numerados do resort' },
+];
+
+const apartmentSlides = [
+  { src: '/apartment.webp?v=3', alt: 'Vista da varanda do apartamento para a piscina' },
+  { src: '/apartamento-camas-solteiro.webp', alt: 'Quarto com duas camas de solteiro e saída para a piscina' },
+  { src: '/apartamento-cama-casal.webp', alt: 'Quarto com cama de casal, televisão e saída para a piscina' },
 ];
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
@@ -248,6 +256,37 @@ function Photo({ src, alt, className = '' }: { src: string; alt: string; classNa
   return (
     <div className={`photo-frame ${className}`}>
       <img src={assetPath(src)} alt={alt} className="h-full w-full object-cover" />
+      <span className="photo-sheen" aria-hidden="true" />
+    </div>
+  );
+}
+
+function ApartmentCarousel() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrent((slide) => (slide + 1) % apartmentSlides.length);
+    }, 5200);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return (
+    <div
+      className="apartment-carousel photo-frame mb-3 aspect-[4/3]"
+      role="region"
+      aria-roledescription="carrossel"
+      aria-label="Fotos do apartamento"
+    >
+      {apartmentSlides.map((slide, index) => (
+        <img
+          key={slide.src}
+          src={assetPath(slide.src)}
+          alt={index === current ? slide.alt : ''}
+          aria-hidden={index !== current}
+          className={`apartment-slide ${index === current ? 'is-active' : ''}`}
+        />
+      ))}
       <span className="photo-sheen" aria-hidden="true" />
     </div>
   );
@@ -487,6 +526,17 @@ export function PortoGuide() {
             Seja muito bem-vindo ao <strong className="text-white">apto 134, bloco 2</strong>.
             Seu guia rápido para aproveitar cada momento.
           </p>
+          <a
+            href={links.resortLocation}
+            target="_blank"
+            rel="noreferrer"
+            className="group mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-cyan-300/25 bg-slate-950/45 px-3.5 py-2 text-sm text-slate-200 shadow-[0_8px_30px_rgba(0,0,0,.2)] backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-cyan-300/50 hover:bg-slate-950/65"
+            aria-label="Abrir a localização do Porto 2 Life na Praia de Muro Alto"
+          >
+            <MapPin className="size-4 text-cyan-300" aria-hidden="true" />
+            <span><strong className="font-extrabold text-white">Praia de Muro Alto</strong>, Pernambuco</span>
+            <ExternalLink className="size-3.5 text-cyan-300 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+          </a>
           <div className="mt-6 grid grid-cols-2 gap-2.5">
             <div className="time-card">
               <KeyRound className="size-5 text-cyan-300" />
@@ -532,6 +582,9 @@ export function PortoGuide() {
                 <p>No check-in, solicite à recepção um berço para o apartamento.</p>
                 <p className="mt-3 text-slate-400">Sujeito a disponibilidade.</p>
               </InfoCard>
+              <InfoCard icon={PawPrint} title="Pet friendly 🐾">
+                <p>Permitidos cães de até 10 kg. Consulte taxas e regras diretamente com o resort.</p>
+              </InfoCard>
               <InfoCard icon={CarFront} title="Estacionamento">
                 Uma vaga está incluída por apartamento. Consulte a recepção para veículos adicionais.
               </InfoCard>
@@ -553,7 +606,7 @@ export function PortoGuide() {
               title="Seu apartamento"
               description="Conforto com varanda e saída para a piscina."
             />
-            <Photo src="/apartment.webp?v=3" alt="Vista da varanda do apartamento para a piscina" className="mb-3 aspect-[4/3]" />
+            <ApartmentCarousel />
             <DetailAccordion
               items={[
                 {
@@ -561,6 +614,17 @@ export function PortoGuide() {
                   icon: LockKeyhole,
                   title: 'Segurança na varanda',
                   content: <>A varanda tem uma portinha com chave. Com crianças, mantenha-a trancada e guarde a chave com você. A piscina tem escada, mas é funda.</>,
+                },
+                {
+                  value: 'itens-basicos',
+                  icon: Utensils,
+                  title: 'Itens básicos do apartamento',
+                  content: (
+                    <>
+                      <p>O apartamento conta com frigobar, pratos e talheres para sua comodidade.</p>
+                      <p className="mt-3">Secador de cabelo e cofre não ficam disponíveis no quarto, mas podem ser solicitados por empréstimo na recepção, conforme a disponibilidade.</p>
+                    </>
+                  ),
                 },
                 {
                   value: 'cafe',
@@ -745,7 +809,7 @@ export function PortoGuide() {
                 { icon: Gamepad2, label: 'Salão de jogos', value: '8h–22h' },
                 { icon: Palmtree, label: 'Brinquedoteca', value: '8h–22h' },
                 { icon: Dumbbell, label: 'Academia', value: '24h' },
-                { icon: Phone, label: 'Recepção', value: '24h' },
+                { icon: PawPrint, label: 'Dog Care', value: 'Ramal 6069' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="glass-card p-3.5">
                   <Icon className="size-5 text-cyan-300" />
@@ -853,6 +917,12 @@ export function PortoGuide() {
                   icon: Utensils,
                   title: 'Alimentos nas áreas sociais',
                   content: <>Nas piscinas e áreas sociais, consuma apenas alimentos e bebidas comprados nos pontos de venda do resort. As refeições podem ser feitas no quarto.</>,
+                },
+                {
+                  value: 'livre-de-fumo',
+                  icon: CircleAlert,
+                  title: 'Ambiente livre de fumo',
+                  content: <>É proibido fumar nas dependências do resort, inclusive no apartamento. O descumprimento está sujeito a multa, conforme as regras do empreendimento.</>,
                 },
                 {
                   value: 'recepcao',
