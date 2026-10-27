@@ -40,6 +40,11 @@ jobs:
         env:
           NEXT_PUBLIC_BASE_PATH: /porto2life
 
+      - name: Preparar e validar arquivos para GitHub Pages
+        run: node scripts/prepare-pages.mjs
+        env:
+          NEXT_PUBLIC_BASE_PATH: /porto2life
+
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
 
