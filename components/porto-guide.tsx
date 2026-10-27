@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -96,6 +96,12 @@ const resortMapPages = [
   { src: '/mapa-resort.webp', label: 'Mapa do resort', alt: 'Mapa aéreo do resort com blocos e áreas numeradas' },
   { src: '/mapa-resort-legenda.webp', label: 'Legenda e locais', alt: 'Legenda do mapa com a descrição dos locais numerados do resort' },
 ];
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
+function assetPath(src: string) {
+  return src.startsWith('/') ? `${basePath}${src}` : src;
+}
 
 function Reveal({ children, className = '' }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -241,7 +247,7 @@ function ActionLink({
 function Photo({ src, alt, className = '' }: { src: string; alt: string; className?: string }) {
   return (
     <div className={`photo-frame ${className}`}>
-      <img src={src} alt={alt} className="h-full w-full object-cover" />
+      <img src={assetPath(src)} alt={alt} className="h-full w-full object-cover" />
       <span className="photo-sheen" aria-hidden="true" />
     </div>
   );
@@ -274,7 +280,7 @@ function ExpandablePhoto({ src, alt }: { src: string; alt: string }) {
         className="group relative mt-3 block w-full overflow-hidden rounded-xl border border-cyan-300/15 bg-slate-950/40 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
         aria-label="Ampliar foto do café continental"
       >
-        <img src={src} alt={alt} className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+        <img src={assetPath(src)} alt={alt} className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
         <span className="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-full bg-slate-950/75 px-2.5 py-1.5 text-[11px] font-bold text-white backdrop-blur-sm">
           <Maximize2 className="size-3.5" aria-hidden="true" />
           Ampliar foto
@@ -298,7 +304,7 @@ function ExpandablePhoto({ src, alt }: { src: string; alt: string }) {
             <X className="size-5" aria-hidden="true" />
           </button>
           <img
-            src={src}
+            src={assetPath(src)}
             alt={alt}
             className="max-h-[90dvh] max-w-full rounded-2xl object-contain shadow-2xl"
             onClick={(event) => event.stopPropagation()}
@@ -349,7 +355,7 @@ function ImageGallery({
         className="group relative block w-full overflow-hidden rounded-xl border border-cyan-300/15 bg-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
         aria-label={`Ampliar página ${activeIndex + 1} de ${galleryName}: ${activePage.label}`}
       >
-        <img src={activePage.src} alt={activePage.alt} className="aspect-[4/3] w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]" />
+        <img src={assetPath(activePage.src)} alt={activePage.alt} className="aspect-[4/3] w-full object-contain transition-transform duration-500 group-hover:scale-[1.02]" />
         <span className="absolute bottom-2 right-2 flex items-center gap-1.5 rounded-full bg-slate-950/80 px-2.5 py-1.5 text-[11px] font-bold text-white backdrop-blur-sm">
           <Maximize2 className="size-3.5" aria-hidden="true" />
           Ampliar
@@ -396,7 +402,7 @@ function ImageGallery({
             <X className="size-5" aria-hidden="true" />
           </button>
           <div className="flex max-h-[82dvh] w-full items-center justify-center" onClick={(event) => event.stopPropagation()}>
-            <img src={activePage.src} alt={activePage.alt} className="max-h-[82dvh] max-w-full rounded-xl object-contain shadow-2xl" />
+            <img src={assetPath(activePage.src)} alt={activePage.alt} className="max-h-[82dvh] max-w-full rounded-xl object-contain shadow-2xl" />
           </div>
           <div className="mt-3 flex items-center gap-4" onClick={(event) => event.stopPropagation()}>
             <button type="button" onClick={showPrevious} className="flex size-11 items-center justify-center rounded-full bg-white/15 text-white hover:bg-white/25" aria-label="Página anterior">
@@ -462,7 +468,7 @@ export function PortoGuide() {
 
       <section id="inicio" className="hero-section scroll-mt-20">
         <img
-          src="/hero.webp"
+          src={assetPath('/hero.webp')}
           alt="Vista aérea do Porto 2 Life, entre o mar e o resort"
           className="absolute inset-0 h-full w-full object-cover object-center"
         />
@@ -863,6 +869,7 @@ export function PortoGuide() {
                 target="_blank"
                 rel="noreferrer"
                 className="instagram-cta group"
+                style={{ '--instagram-image': `url("${assetPath('/instagram-resort.webp')}")` } as CSSProperties}
                 aria-label="Siga nosso Instagram: abrir o perfil @2liferesortmuroalto"
               >
                 <span className="instagram-cta-icon" aria-hidden="true">
