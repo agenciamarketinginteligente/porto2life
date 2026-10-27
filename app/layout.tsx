@@ -7,18 +7,46 @@ const geist = Geist({
   subsets: ['latin'],
 });
 
+const siteUrl = new URL('https://agenciamarketinginteligente.github.io/porto2life/');
+const shareImageUrl = new URL('og-porto2life.jpg', siteUrl).href;
+const title = 'Porto 2 Life | Guia de experiência';
+const description = 'Bem-vindo ao apto 134, bloco 2. Chegada, gastronomia, lazer, serviços e contatos: tudo para aproveitar sua estadia.';
+
 export const metadata: Metadata = {
-  title: 'Porto 2 Life | Guia de experiência',
-  description: 'Guia mobile do apartamento 134, bloco 2, no Porto 2 Life: chegada, serviços, gastronomia, lazer e contatos.',
+  metadataBase: siteUrl,
+  title,
+  description,
+  alternates: {
+    canonical: siteUrl.href,
+  },
   openGraph: {
-    title: 'Porto 2 Life | Guia de experiência',
-    description: 'Tudo o que você precisa para aproveitar sua estadia no apartamento 134.',
+    title,
+    description,
+    url: siteUrl.href,
+    siteName: 'Porto 2 Life',
+    locale: 'pt_BR',
     type: 'website',
+    images: [
+      {
+        url: shareImageUrl,
+        secureUrl: shareImageUrl,
+        width: 1206,
+        height: 875,
+        type: 'image/jpeg',
+        alt: 'Porto 2 Life — Guia de experiência do apartamento 134, bloco 2, com vista aérea do resort.',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Porto 2 Life | Guia de experiência',
-    description: 'Tudo o que você precisa para aproveitar sua estadia no apartamento 134.',
+    title,
+    description,
+    images: [
+      {
+        url: shareImageUrl,
+        alt: 'Porto 2 Life — Guia de experiência do apartamento 134, bloco 2.',
+      },
+    ],
   },
 };
 
